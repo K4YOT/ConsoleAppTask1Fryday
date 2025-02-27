@@ -37,11 +37,11 @@ namespace ConsoleAppTask1Fryday
             {
                 using (var context = new LibraryContext())
                 {
-                    var author = new Author { Name = "Лев Толстой", Country = "Россия" };
+                    var author = new Author { Name = "Анатолий Ливри", Country = "Россия" };
                     context.Authors.Add(author);
                     context.SaveChanges();
 
-                    var book = new Book { Title = "Война и мир", PublishedYear = 1869, AuthorId = author.AuthorId };
+                    var book = new Book { Title = "Системный антибелый расизм", PublishedYear = 2022, AuthorId = author.AuthorId };
                     context.Books.Add(book);
                     context.SaveChanges();
 
