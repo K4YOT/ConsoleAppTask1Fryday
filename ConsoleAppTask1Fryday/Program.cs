@@ -32,25 +32,38 @@ namespace ConsoleAppTask1Fryday
             public DbSet<Book> Books { get; set; }
         }
 
-   
-            static void Main(string[] args)
+
+        static void Main(string[] args)
+        {
+            using (var context = new LibraryContext())
             {
-                using (var context = new LibraryContext())
+                // CRUD операции для Authors
+                var author = new Author { Name = "Лев Толстой", Country = "Россия" };
+                context.Authors.Add(author);
+                context.SaveChanges();
+
+                // CRUD операции для Books
+                var book = new Book { Title = "Война и мир", PublishedYear = 1869, AuthorId = author.AuthorId };
+                context.Books.Add(book);
+                context.SaveChanges();
+
+                // Чтение данных
+
                 {
-                    var author = new Author { Name = "Анатолий Ливри", Country = "Россия" };
-                    context.Authors.Add(author);
-                    context.SaveChanges();
+                    // Явная загрузка авторов вместе с книгами
+                    var books = context.Books
+                        .Include(b => b.Author) // Загружаем автора
+                        .Where(b => b.PublishedYear > 1800)
+                        .ToList();
 
-                    var book = new Book { Title = "Системный антибелый расизм", PublishedYear = 2022, AuthorId = author.AuthorId };
-                    context.Books.Add(book);
-                    context.SaveChanges();
-
-                    var books = context.Books.Where(b => b.PublishedYear > 1800).ToList();
+                    // Вывод данных с проверкой на null
                     foreach (var b in books)
                     {
-                        Console.WriteLine($"{b.Title} - {b.Author.Name}");
+                        string authorName = b.Author != null ? b.Author.Name : "Автор неизвестен";
+                        Console.WriteLine($"{b.Title} - {authorName}");
                     }
                 }
             }
         }
     }
+}
