@@ -37,26 +37,21 @@ namespace ConsoleAppTask1Fryday
         {
             using (var context = new LibraryContext())
             {
-                // CRUD операции для Authors
                 var author = new Author { Name = "Лев Толстой", Country = "Россия" };
                 context.Authors.Add(author);
                 context.SaveChanges();
 
-                // CRUD операции для Books
                 var book = new Book { Title = "Война и мир", PublishedYear = 1869, AuthorId = author.AuthorId };
                 context.Books.Add(book);
                 context.SaveChanges();
 
-                // Чтение данных
 
                 {
-                    // Явная загрузка авторов вместе с книгами
                     var books = context.Books
-                        .Include(b => b.Author) // Загружаем автора
+                        .Include(b => b.Author) 
                         .Where(b => b.PublishedYear > 1800)
                         .ToList();
 
-                    // Вывод данных с проверкой на null
                     foreach (var b in books)
                     {
                         string authorName = b.Author != null ? b.Author.Name : "Автор неизвестен";
